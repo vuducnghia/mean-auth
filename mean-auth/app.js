@@ -12,6 +12,7 @@ const User = require('./models/user');
 mongoose.connect(config.database);
 
 const api = require('./routes/api');
+const book = require('./routes/Book');
 const app = express();
 
 // view engine setup
@@ -39,7 +40,7 @@ app.get('/', function(req, res) {
 
 
 app.use('/api', api);
-
+app.use('/book', book);
 // app.get('*', function (req, res) {
 //   res.sendFile(path.join(__dirname, 'dist/index.html'));
 // });

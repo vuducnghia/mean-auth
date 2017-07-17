@@ -7,6 +7,19 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 var User = require("../models/user");
 var Book = require('../models/book');
+
+roleAuthorization = function (roles) {
+    return function (req, res, next) {
+        if (req.user.roles === roles) {
+            console.log(req.user.roles);
+            return true;
+        }
+        else
+            // res.send({ success: false, msg: 'role false' });
+            return false;
+    }
+}
+
 router.post('/signup', function (req, res) {
     if (!req.body.username || !req.body.password) {
         res.json({ success: false, msg: 'please pass name and password' });
@@ -14,7 +27,8 @@ router.post('/signup', function (req, res) {
     else {
         var newName = new User({
             username: req.body.username,
-            password: req.body.password
+            password: req.body.password,
+            roles: req.body.roles
         });
         newName.save(function (err) {
             if (err) {
@@ -25,6 +39,7 @@ router.post('/signup', function (req, res) {
         });
     }
 });
+
 router.post('/login', function (req, res) {
     User.findOne({
         username: req.body.username
@@ -52,45 +67,28 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false }), func
     var token = getToken(req.headers);
     if (token) {
         var decoded = jwt.decode(token, config.secret);
-        User.findOne({
-            name: decoded.name // tai sao lai la name : chu khong phai username
-        }, function (err, user) {
-            if (err) throw err;
+        if (decoded._doc.roles ==='admin') {
+            User.findOne({
+                username: decoded._doc.username // muon biet tai sao thi console.log(decoded) o ben tren;
+            }, function (err, user) {
+                if (err) throw err;
 
-            if (!user) {
-                return res.status(403).send({ success: false, msg: 'Authentication failed. User not found.' });
-            } else {
-                res.json({ success: true, msg: 'Welcome in the member area ' + user.username + '!' });
-            }
-        });
+                if (!user) {
+                    return res.status(403).send({ success: false, msg: 'Authentication failed. User not found.' });
+                } else {
+                    res.json({ success: true, msg: 'Welcome in the member area ' + user.username + '!' });
+                }
+            });
+        }
+        else{
+            return res.status(403).send({ success: false, msg: 'not roles' });
+        }
     } else {
         return res.status(403).send({ success: false, msg: 'No token provided' });
     }
 });
 
-router.post('/book', passport.authenticate('jwt', { session: false }), function (req, res) {
-    var token = getToken(req.headers);
-    if (token) {
-        var newBook = new Book({
-            title: req.body.title,
-            author: req.body.author,
-            price: req.body.price,
-        });
-        newBook.save(function(err){
-            if (err) {
-                res.json({ success: false, msg: 'save book error' });
-            } else {
-                res.json({ success: true, msg: 'save book success' })
-            }
-        });
-    }else{
-        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
-    }
-});
 
-router.get('/book', function(req, res){
-
-});
 
 getToken = function (headers) {
     if (headers && headers.authorization) {
@@ -104,4 +102,6 @@ getToken = function (headers) {
         return null;
     }
 };
+
+
 module.exports = router;
