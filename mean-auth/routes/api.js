@@ -6,19 +6,6 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var User = require("../models/user");
-var Book = require('../models/book');
-
-roleAuthorization = function (roles) {
-    return function (req, res, next) {
-        if (req.user.roles === roles) {
-            console.log(req.user.roles);
-            return true;
-        }
-        else
-            // res.send({ success: false, msg: 'role false' });
-            return false;
-    }
-}
 
 router.post('/signup', function (req, res) {
     if (!req.body.username || !req.body.password) {
@@ -69,7 +56,7 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false }), func
         var decoded = jwt.decode(token, config.secret);
         if (decoded._doc.roles ==='admin') {
             User.findOne({
-                username: decoded._doc.username // muon biet tai sao thi console.log(decoded) o ben tren;
+                username: decoded._doc.username 
             }, function (err, user) {
                 if (err) throw err;
 

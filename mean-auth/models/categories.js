@@ -1,21 +1,12 @@
-var mongoose = require('mongosse');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
- 
-var Categories ={
+
+var CategoriesSchema = new Schema({
     name: {
         type: String,
-        default: '',
-        required: 'Please fill Category name',
-        trim: true
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    },
-    user: {
-        type: Schema.ObjectId,
-        ref: 'User'
+        required: true
     }
-}
+    
+});
 
 module.exports = mongoose.model('Categories', CategoriesSchema);

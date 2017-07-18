@@ -1,0 +1,7 @@
+
+<br>
+<form (ngSubmit)="SignIn()">
+    <input placeholder="username" type="text" class="col-md-3" [(ngModel)]="userSignIn.username" name="username">
+    <input type="password" class="col-md-3" [(ngModel)]="userSignIn.password" name="password">
+    <button (click)="SignIn()">Signin</button>
+</form>
