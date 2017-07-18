@@ -1,0 +1,8 @@
+<div class="col-lg-10">
+    <form class="input-group" (ngSubmit)="Save()">
+        <input type="text" class="form-control" placeholder="name" [(ngModel)]="categories.name" name="name">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button" (click)="Save()">Go!</button>
+      </span>
+    </form>
+</div>

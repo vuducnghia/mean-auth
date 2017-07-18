@@ -23,11 +23,13 @@ router.post('/book', passport.authenticate('jwt', { session: false }), function 
     }
 });
 
-router.get('/book', function (req, res) {
-    Book.find(function(err, books){
-        if(err) return next(err);
-        res.json(books);
-    });
+/* GET ALL BOOKS */
+router.get('/book', function(req, res, next) {
+    console.log('get book');
+  Book.find(function (err, products) {
+    if (err) return next(err);
+    res.json(products);
+  });
 });
 
 getToken = function (headers) {

@@ -13,6 +13,6 @@ export class LoginComponent {
             console.log('login success');
         }, (err)=>{
             console.log(err);
-        })
+        });
     }
 }

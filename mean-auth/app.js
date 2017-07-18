@@ -21,7 +21,6 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-//
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -36,15 +35,13 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(morgan('dev'));
 app.use(passport.initialize());
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
 
 //
 
 app.use('/api', api);
 app.use('/book', book);
 app.use('/categories', categories);
+
 // app.get('*', function (req, res) {
 //   res.sendFile(path.join(__dirname, 'dist/index.html'));
 // });

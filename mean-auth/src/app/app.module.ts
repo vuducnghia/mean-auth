@@ -25,7 +25,7 @@ import { HomeRouteModule } from './home/home.module';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule, 
+    HttpModule,
     RouterModule,
     //
     NavbarRouteModule,
@@ -33,7 +33,7 @@ import { HomeRouteModule } from './home/home.module';
     // RouterModule.forRoot(appRoutes)
   ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

@@ -52,14 +52,15 @@ router.post('/login', function (req, res) {
 
 router.get('/memberinfo', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
+    console.log('token api');
     if (token) {
         var decoded = jwt.decode(token, config.secret);
+        console.log(decoded);
         if (decoded._doc.roles ==='admin') {
             User.findOne({
                 username: decoded._doc.username 
             }, function (err, user) {
                 if (err) throw err;
-
                 if (!user) {
                     return res.status(403).send({ success: false, msg: 'Authentication failed. User not found.' });
                 } else {
@@ -75,9 +76,8 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false }), func
     }
 });
 
-
-
 getToken = function (headers) {
+    console.log('token');
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
         if (parted.length === 2) {
