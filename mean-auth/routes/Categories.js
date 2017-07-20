@@ -8,6 +8,7 @@ var router = express.Router();
 var Categories = require('../models/categories');
 
 router.post('/categories', passport.authenticate('jwt', { session: false }), function (req, res) {
+    console.log(req.header);
     var token = getToken(req.headers);
     if (token) {
         var newCategories = new Categories(req.body);
@@ -31,6 +32,8 @@ router.get('/categories', function (req, res) {
 });
 
 getToken = function (headers) {
+    console.log('header : ' + headers);
+    console.log('header.au : ' + headers.authenticate);
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
         if (parted.length === 2) {
