@@ -24,10 +24,7 @@ export class UserService {
                 .map(res => res.json())
                 .subscribe(res => {
                     this.token = res.token;
-                    // console.log(res);
                     this.username = res.username;
-                    console.log(res.username);
-                    // console.log(res.token);
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify({ username: this.username, token: this.token }));
                     resolve(res);

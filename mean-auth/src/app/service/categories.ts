@@ -20,6 +20,7 @@ export class CategoriesService {
                 });
         });
     }
+
     saveCategories(data) {
         let headers = new Headers({ 'Authorization': this.userService.token });
         let options = new RequestOptions({ headers: headers });
@@ -27,13 +28,23 @@ export class CategoriesService {
             this.http.post('/categories/categories', data, options)
                 .map(res => res.json())
                 .subscribe(res => {
-                    console.log(res);
-                    console.log('service api/categories');
                     resolve(res);
                 }, (err) => {
-                    console.log('err : service api/categories');
                     reject(err);
                 });
+        })
+    }
+
+    deleteCategories(id) {
+        let headers = new Headers({ 'Authorization': this.userService.token });
+        let options = new RequestOptions({ headers: headers });
+        return new Promise((resolve, reject) => {
+            this.http.delete('/categories/' + id, options)
+                .subscribe(res => {
+                    resolve(res);
+                }, (err) => {
+                    reject(err);
+                })
         })
     }
 }

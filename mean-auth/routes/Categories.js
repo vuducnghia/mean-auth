@@ -8,7 +8,6 @@ var router = express.Router();
 var Categories = require('../models/categories');
 
 router.post('/categories', passport.authenticate('jwt', { session: false }), function (req, res) {
-    console.log(req.header);
     var token = getToken(req.headers);
     if (token) {
         var newCategories = new Categories(req.body);
@@ -25,11 +24,26 @@ router.post('/categories', passport.authenticate('jwt', { session: false }), fun
 });
 
 router.get('/categories', function (req, res) {
-    Categories.find(function(err, categories){
-        if(err) return next(err);
+    Categories.find(function (err, categories) {
+        if (err) return next(err);
         res.json(categories);
     });
 });
+
+router.delete('/:id', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var decoded = jwt.decode(token, config.secret);
+        console.log(decoded);
+        if (decoded._doc.roles === 'admin') {
+            Categories.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+                if (err) return next(err);
+                console.log('delete success');                
+                res.json(post);
+            })
+        }
+    }
+})
 
 getToken = function (headers) {
     console.log('header : ' + headers);

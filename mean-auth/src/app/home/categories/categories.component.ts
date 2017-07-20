@@ -5,16 +5,26 @@ import { CategoriesService } from '../../service/categories';
     selector: 'categories-component',
     templateUrl: './categories.component.html'
 })
-export class CategoriesComponent implements OnInit{ 
-    categories:any;
+export class CategoriesComponent implements OnInit {
+    categories: any;
     ngOnInit(): void {
         this.getCategoriesList();
     }
-    constructor(private categoriesService : CategoriesService){}
-    getCategoriesList(){
-        this.categoriesService.getAllCategories().then((res)=>{
+    constructor(private categoriesService: CategoriesService) { }
+    
+    getCategoriesList() {
+        this.categoriesService.getAllCategories().then((res) => {
             this.categories = res;
-        }, (err)=>{
+        }, (err) => {
+            console.log(err);
+        });
+    }
+
+    delete(id) {
+        console.log('id : '+id);
+        this.categoriesService.deleteCategories(id).then((result) => {
+            console.log('delete success');
+        },(err)=>{
             console.log(err);
         });
     }

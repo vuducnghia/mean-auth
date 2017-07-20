@@ -1,8 +1,8 @@
 <div class="list-group">
     <ul>
         <li *ngFor="let item of categories" class="list-group-item col-md-10">{{item.name}}
-            <button class="btn btn-primary">Edit</button>
-            <button class="btn btn-danger">Delete</button>
+            <button class="btn btn-primary" >Edit</button>
+            <button class="btn btn-danger" (click)="delete(item._id)">Delete</button>
         </li>
     </ul>
 </div>
